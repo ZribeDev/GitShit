@@ -5,7 +5,7 @@
 "GitShit" is a straightforward Python script designed to identify and modify author names and emails in git commits. It scans for specified unwanted keywords within commit author details and replaces them with user-defined values.
 
 ### Compatibility Note
-While "GitShit" has only been tested on Pop!_OS, it should theoretically be compatible with any Linux distribution that is built on Debian.
+While "GitShit" has only been tested on Pop!_OS, a Debian-based distribution, its reliance on Python and Bash suggests it could also be compatible with non-Debian based Linux distributions. However, this broader compatibility has not been explicitly verified.
 
 ## Setup and Installation
 
