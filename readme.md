@@ -41,6 +41,7 @@ While "GitShit" has only been tested on Pop!_OS, a Debian-based distribution, it
 3. **Generate a GitHub Token**
 
    - Navigate to [GitHub Tokens](https://github.com/settings/tokens) to generate a new token with necessary permissions.
+   - **Important:** Ensure that the token has the `repo` permission, which provides all repository permissions. This is crucial for the script to function correctly as it needs to access and modify repository data.
    - Place this token in the `GITHUB_TOKEN` field in your `.env` file.
 4. **Install Dependencies**
 
