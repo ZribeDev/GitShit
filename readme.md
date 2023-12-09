@@ -57,7 +57,7 @@ While "GitShit" has only been tested on Pop!_OS, a Debian-based distribution, it
 
 ## Usage
 
-- To execute the script once (will only change a single repository if `CHANGE_EMAILS` is set to `True`):
+- To execute the script once:
   ```bash
   python main.py
   ```
