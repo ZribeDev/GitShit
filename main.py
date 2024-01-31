@@ -16,15 +16,26 @@ New_Email = os.getenv('NEW_EMAIL')
 CHANGE_EMAILS = os.getenv('CHANGE_EMAILS') == 'True'
 
 def fetch_repos(token):
-    url = "https://api.github.com/user/repos"
-    headers = {'Authorization': f'token {token}'}
-    response = requests.get(url, headers=headers)
-    return response.json()
+    all_repos = []  
+    page = 1  
+    while True:  
+        url = f"https://api.github.com/user/repos?page={page}"  
+        headers = {'Authorization': f'token {token}'}
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200 and response.json():
+            all_repos.extend(response.json())
+            page += 1
+            
+        else:
+            break
+    return all_repos  
 
 def fetch_commits(user, repo, token):
     url = f"https://api.github.com/repos/{user}/{repo}/commits"
     headers = {'Authorization': f'token {token}'}
     response = requests.get(url, headers=headers)
+    
     return response.json()
 
 def check_commits(commits):
