@@ -1,8 +1,10 @@
 import requests
 import logging
 import os
+import shutil
 from colorama import init, Fore
 from dotenv import load_dotenv
+
 load_dotenv()
 init(autoreset=True)
 
@@ -52,8 +54,9 @@ def check_commits(commits):
         else:
             logging.info(Fore.GREEN + f"Commit {commit['sha']} is safe: committer {committer_email} by {committer_name}, author {author_email} by {author_name}")
 
-
 def clone_repository(repo_url, temp_dir):
+    if os.path.exists(temp_dir):
+        shutil.rmtree(temp_dir)
     os.makedirs(temp_dir, exist_ok=True)
     os.system(f'git clone {repo_url} {temp_dir}')
 
@@ -93,11 +96,10 @@ def main():
                 replace_unwanted_info(temp_dir, current_commit_author_email, current_commit_author_name, New_Email, New_Name)
                 logging.info(Fore.GREEN + "Unsafe commits replaced.")
 
-                os.chdir(repo['name'])
+                os.chdir(temp_dir)
                 os.system('git push --force --all')
                 os.chdir('..')
                 logging.info(Fore.GREEN + "Changes pushed to the repository.")
-
 
 if __name__ == "__main__":
     main()
