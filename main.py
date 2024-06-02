@@ -18,7 +18,7 @@ New_Email = os.getenv('NEW_EMAIL')
 CHANGE_EMAILS = os.getenv('CHANGE_EMAILS') == 'True'
 IS_ORG = os.getenv('IS_ORGANIZATION') == 'True'
 ORG_NAME = os.getenv('ORGANIZATION_NAME')
-
+PROGRAM_PATH = os.getcwd()
 def fetch_repos(token):
     all_repos = []  
     page = 1  
@@ -61,9 +61,10 @@ def clone_repository(repo_url, temp_dir):
     os.system(f'git clone {repo_url} {temp_dir}')
 
 def replace_unwanted_info(temp_dir, old_email, old_name, new_email, new_name):
-    os.chdir(temp_dir)
+    tmpp = os.path.join(PROGRAM_PATH, temp_dir)
+    os.chdir(tmpp)
     os.system(f'git filter-branch --env-filter \'if [ "$GIT_COMMITTER_EMAIL" = "{old_email}" ]; then export GIT_COMMITTER_EMAIL="{new_email}"; export GIT_COMMITTER_NAME="{new_name}"; fi; if [ "$GIT_AUTHOR_EMAIL" = "{old_email}" ]; then export GIT_AUTHOR_EMAIL="{new_email}"; export GIT_AUTHOR_NAME="{new_name}"; fi;\' --tag-name-filter cat -- --branches --tags')
-    os.chdir('..')
+    os.chdir(PROGRAM_PATH)
 
 def main():
     repos = fetch_repos(f'{token}')
@@ -95,10 +96,10 @@ def main():
                 replace_unwanted_info(temp_dir, current_commit_committer_email, current_commit_committer_name, New_Email, New_Name)
                 replace_unwanted_info(temp_dir, current_commit_author_email, current_commit_author_name, New_Email, New_Name)
                 logging.info(Fore.GREEN + "Unsafe commits replaced.")
-
-                os.chdir(temp_dir)
+                tmpp = os.path.join(PROGRAM_PATH, temp_dir)
+                os.chdir(tmpp)
                 os.system('git push --force --all')
-                os.chdir('..')
+                os.chdir(PROGRAM_PATH)
                 logging.info(Fore.GREEN + "Changes pushed to the repository.")
 
 if __name__ == "__main__":
