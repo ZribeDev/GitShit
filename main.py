@@ -58,7 +58,12 @@ def clone_repository(repo_url, temp_dir):
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir)
     os.makedirs(temp_dir, exist_ok=True)
-    os.system(f'git clone {repo_url} {temp_dir}')
+    
+    if repo_url.startswith('https://github.com'):
+        modified_url = repo_url.replace('https://', f'https://{token}@')
+        os.system(f'git clone {modified_url} {temp_dir}')
+    else:
+        os.system(f'git clone {repo_url} {temp_dir}')
 
 def replace_unwanted_info(temp_dir, old_email, old_name, new_email, new_name):
     tmpp = os.path.join(PROGRAM_PATH, temp_dir)
